@@ -1,0 +1,55 @@
+1000001/1	Lógica Matemática Aplicada a Computação 
+1000002/1	Introdução a Computação
+1000003/1	Cálculo Diferencial
+1000004/1	Algoritmos e Programação
+1000005/1	Português
+1000005/2	Português
+1000002/2	Introdução a Computação
+1000004/2	Algoritmos e Programação
+1000003/2	Cálculo Diferencial
+1000001/2	Lógica Matemática Aplicada a Computação
+1000006/1	Cálculo Integral
+1000007/1	Introdução a  Linguagem de Programação
+1000008/1	Matemática Discreta
+1000009/1	Física
+1000010/1	Metodologia do Estudo
+1000007/2	Introdução a  Linguagem de Programação
+1000006/2	Cálculo Integral
+1000009/2	Física
+1000008/2	Matemática Discreta
+1000010/2	Metodologia do Estudo
+1000011/1	Introdução a Algebra Linear
+1000012/1	Arquitetura de Computadores
+1000013/1	Estatística e Probabilidade 
+1000014/1	Estrutura de Dados I  
+1000015/1	Metodologia e Linguagem de Programação 
+1000016/1	Sistemas Digitais
+1000017/1	Banco de Dados
+1000018/1	Metodologia e Linguagem de Programação Avançada
+1000019/1	Estrutura de Dados II
+1000020/1	Introdução a Redes de Computadores
+1000021/1	Linguagens Formais e Autômatos
+1000022/1	Software Básico
+1000023/1	Análise e Projeto de Sistemas
+1000024/1	Banco de Dados Avançado 
+1000025/1	Teoria da Computação
+1000026/1	Engenharia de Software
+1000027/1	Implementação e Projeto de Redes
+1000028/1	Sistemas Operacionais
+1000029/1	Arquitetura e Padrões de Projetos
+1000030/1	Interface Homem-Computador
+1000032/1	Gerenciamento de Projetos
+1000033/1	Construção de Compiladores
+1000034/1	Trabalho de Conclusão I
+1000035/1	Tópicos Especiais
+1000036/1	Computação Gráfica
+1000037/1	Empreendedorismo
+1000031/1	Programação Avançada para Web
+1000038/1	Inteligência Artificial
+1000039/1	Desenvolvimento de Projeto de Software
+1000040/1	Trabalho de Conclusão II
+1000041/1	Estágio Supervisionado
+1000040/2	Trabalho de Conclusão II
+1000041/2	Estágio Supervisionado
+1000042/2	Informática Jurídica
+1000042/1	Informática Jurídica
