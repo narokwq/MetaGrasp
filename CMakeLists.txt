@@ -11,5 +11,5 @@ set(SOURCE_FILES main.cpp
         Sala.h
         TipoStruct.h
         Disciplina.h
-        Horario.h QuadroHorario.cpp QuadroHorario.h Periodo.h)
+        Horario.h QuadroHorario.cpp QuadroHorario.h Periodo.h Grasp.cpp Grasp.h Candidato.cpp Candidato.h Solucao.cpp Solucao.h Candidatos.cpp Candidatos.h Elemento.cpp Elemento.h Avaliacao.cpp Avaliacao.h Aula.cpp Aula.h)
 add_executable(MetaG ${SOURCE_FILES})

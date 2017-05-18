@@ -13,6 +13,9 @@ private:
     bool ocupado;
     Disciplina * disciplina;
 public:
+    QuadroHorario(const QuadroHorario &qh){
+        ocupado = qh.ocupado;
+    }
     QuadroHorario(){
         ocupado = false;
         disciplina = 0;

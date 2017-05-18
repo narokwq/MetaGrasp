@@ -19,9 +19,24 @@ private:
     Horario * quadroHorario;
 
 public:
+    Disciplina(const Disciplina &disc):
+            codDisciplina(disc.codDisciplina),
+            nomeDisciplina(disc.nomeDisciplina),
+            nomeProfessor(disc.nomeProfessor),
+            qntAlunos(disc.qntAlunos),
+            tipoCurso(disc.tipoCurso),
+            reqTipoSala(disc.reqTipoSala),
+            disciplinaAlocada(disc.disciplinaAlocada),
+            quadroHorario(new Horario(*disc.quadroHorario))
+    {};
     Disciplina(){
         disciplinaAlocada = false;
     }
+
+    virtual ~Disciplina() {
+        delete quadroHorario;
+    }
+
     std::string getNomeDisciplina(){return nomeDisciplina;}
     void setNomeDisciplina(std::string nome){nomeDisciplina = nome;}
 

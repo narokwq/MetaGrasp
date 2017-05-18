@@ -16,6 +16,7 @@
 #include "TipoStruct.h"
 #include "Sala.h"
 #include "Periodo.h"
+#include "Solucao.h"
 
 class CarregarDados {
     public:
@@ -26,14 +27,14 @@ class CarregarDados {
         bool CarregarMapNomeProfessor();
         bool CarregarMapHorarios();
 
-        void setSalas(std::vector<Sala*>* argSala){salas = argSala;}
+        void setSalas(Solucao* argSolucao){solucao = argSolucao;}
         void setDisciplina(Periodo * p){periodo = p;}
     private:
         bool CarregarDadosExtras();
-        std::map <std::string, std::vector<std::array<std::string, 2>> >  mapHorarios;
+        std::map <std::string, std::map <std::string, std::vector<std::array<std::string, 2>>> >  mapHorarios;
         std::map <std::string, std::string>  mapNomeDisciplina;
         std::map <std::string, std::string>  mapNomeProfessor;
-        std::vector<Sala*>* salas;
+        Solucao* solucao;
         Periodo * periodo;
 };
 

@@ -13,6 +13,23 @@ class Periodo {
 private:
     std::vector<Disciplina *> disciplinas;
 public:
+    Periodo(){};
+    Periodo(const Periodo &disc)
+    {
+        disciplinas.resize(disc.disciplinas.size());
+        for (int i=0; i < disc.disciplinas.size(); i++) {
+            disciplinas[i] = new Disciplina(*disc.disciplinas[i]);
+        }
+    };
+
+    virtual ~Periodo() {
+        for (auto d: disciplinas) {
+            delete d;
+        }
+        disciplinas.clear();
+        disciplinas.shrink_to_fit();
+    }
+
     void addDisciplinas(Disciplina * disciplina) {
         disciplinas.push_back(disciplina);
     }

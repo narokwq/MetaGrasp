@@ -12,6 +12,19 @@
 
 class Sala {
 public:
+    Sala(const Sala &sl){
+        codSala = sl.codSala;
+        quantidade = sl.quantidade;
+        tipoSala = sl.tipoSala;
+        tipoBloco = sl.tipoBloco;
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 15; j++) {
+                this->quadroHorario[i][j] = new QuadroHorario(*sl.quadroHorario[i][j]);
+
+            }
+        }
+    }
     Sala(){
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 15; j++) {
@@ -20,6 +33,15 @@ public:
             }
         }
     }
+
+    virtual ~Sala() {
+        for (auto q: quadroHorario) {
+            for (auto e: q) {
+                delete e;
+            }
+        }
+    }
+
     void setSala(int cod){ codSala = cod;}
     int getSala(){return codSala;}
     void setQuantidade(int qnt){ quantidade = qnt;}

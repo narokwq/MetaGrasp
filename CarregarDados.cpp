@@ -3,6 +3,7 @@
 //
 
 #include "CarregarDados.h"
+#include "Aula.h"
 
 
 bool CarregarDados::CarregarSalas(){
@@ -23,7 +24,7 @@ bool CarregarDados::CarregarSalas(){
             sala->setSala(std::stoi(salaVector[1]));
             sala->setQuantidade(std::stoi(salaVector[2]));
             sala->setTipoSala(std::stoi(salaVector[3]));
-            salas->push_back(sala);
+            solucao->addSalas(sala);
 
         }else{
             std::cout<< "Quantidade incorreta de itens carregados em salas.txt"<<std::endl;
@@ -50,6 +51,7 @@ bool CarregarDados::CarregarDiciplinas(){
         while(std::getline(fileSteam, linha)){
             std::vector<std::string> dspVector {Util::explode(linha, '\t')};
             if(dspVector.size() == 5){
+
                 Disciplina* disciplina = new Disciplina();
 
                 disciplina->setCodDisciplina(dspVector[0]);
@@ -60,14 +62,39 @@ bool CarregarDados::CarregarDiciplinas(){
 
                 std::vector<std::string> codCursoVector {Util::explode(dspVector[3], ',')};
                 disciplina->setTipoCurso(TipoCurso(stoi(codCursoVector[0])));
+                periodo->addDisciplinas(disciplina);
 
                 Horario* horario = new Horario(std::stoi(dspVector[4]));
                 for(auto curso:mapHorarios[dspVector[0]]){
-                    if(!horario->addHorario(std::stoi(curso[1])))
-                        std::cout<< "Erro quantidade de horarios incompativeis na linha 65"<<std::endl;
+                    Aula * aula = new Aula();
+                    aula->setIdDisciplinaAula(periodo->getDisciplinas().size()-1);
+                    for (auto individual: curso.second) {
+                        aula->addHorario(std::stoi(individual[1]));
+                    }
+                    aula->setQntHorario(curso.second.size());
+                    horario->addHorario(aula);
+
+
+//                    for (std::map<std::string, std::vector<std::array<std::string, 2>>>::iterator it=curso.second.begin(); it!=curso.second.end(); ++it) {
+//
+//                    }
+//                    bool  existNumDias = false;
+//                    if(!horario->addHorario(std::stoi(curso[1])))
+//                        std::cout<< "Erro quantidade de horarios incompativeis na linha 65"<<std::endl;
+//                    for (auto d: numDias) {
+//                        if ((std::stoi(curso[1]) / 100) == d){
+//                            existNumDias = true;
+//                            break;
+//                        }
+//                    }
+//                    if(!existNumDias){
+//                        numDias.push_back((std::stoi(curso[1]) / 100));
+//                    }
                 }
+
+                horario->setQntDiasHorario(mapHorarios[dspVector[0]].size());
                 disciplina->setQuadroHorario(horario);
-                periodo->addDisciplinas(disciplina);
+
 
             }else{
                 std::cout<< "Quantidade incorreta de itens carregados em disciplinas.txt"<<std::endl;
@@ -87,7 +114,7 @@ bool CarregarDados::CarregarDadosExtras(){
 
 bool CarregarDados::CarregarMapHorarios(){
     std::ifstream fileSteam("input/horarios.txt");
-    std::string linha, codDisciplina, curso, horario;
+    std::string linha, codDisciplina, curso, horario, firstletter;
 
     if(!fileSteam.is_open()){
         std::cout<< "Erro ao abrir horarios.txt"<<std::endl;
@@ -100,12 +127,19 @@ bool CarregarDados::CarregarMapHorarios(){
             codDisciplina = sala[0];
             curso = sala[1];
             horario = sala[2];
+            firstletter = horario.substr(0,1);
 
-            std::map<std::string, std::vector<std::array<std::string, 2>>>::iterator iter = mapHorarios.find(codDisciplina);
+            std::map<std::string, std::map<std::string, std::vector<std::array<std::string, 2>>>>::iterator iter = mapHorarios.find(codDisciplina);
+
             if(iter == mapHorarios.end()){
                 mapHorarios[codDisciplina];
             }
-            mapHorarios[codDisciplina].push_back({curso, horario});
+            std::map<std::string, std::vector<std::array<std::string, 2>>>::iterator iter2 = mapHorarios[codDisciplina].find(horario.substr(0,1));
+            if(iter2 == mapHorarios[codDisciplina].end()){
+                mapHorarios[codDisciplina][horario.substr(0,1)];
+            }
+
+            mapHorarios[codDisciplina][horario.substr(0,1)].push_back({curso, horario});
         }else{
             std::cout<< "Quantidade incorreta de itens carregados em salas.txt"<<std::endl;
             return false;
