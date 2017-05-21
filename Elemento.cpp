@@ -6,6 +6,10 @@
 #include "Avaliacao.h"
 
 unsigned __int64 Elemento::getTaxaAtualAvaliacao(){
+    if(salaCandidata->getTipoSala() == Fantasma){
+        taxaAvaliacao = SEM_SALA;
+        return taxaAvaliacao;
+    }
     if(salaCandidata->getTipoSala() != disciplinaCandidata->getReqTipoSala())
         taxaAvaliacao += TIPO_SALA;
     if(salaCandidata->getQuantidade() < disciplinaCandidata->getQntAlunos())

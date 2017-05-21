@@ -3,7 +3,6 @@
 //
 
 #include "CarregarDados.h"
-#include "Aula.h"
 
 
 bool CarregarDados::CarregarSalas(){
@@ -31,6 +30,14 @@ bool CarregarDados::CarregarSalas(){
             return false;
         }
     }
+
+    Sala *sala = new Sala();
+    sala->setTipoBloco(Q);
+    sala->setSala(500);
+    sala->setQuantidade(100);
+    sala->setTipoSala(Fantasma);
+    solucao->addSalas(sala);
+
     std::cout<< "Arquivo carregado salas.txt"<<std::endl;
     fileSteam.close();
     return true;

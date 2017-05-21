@@ -21,12 +21,16 @@ void Grasp::execute() {
         Solucao * solucaoAtual  = new Solucao(*salasOriginal);
 
         construcao(solucaoAtual, periodoCopia);
-
+        unsigned __int64 razao = getRazaoTotal(periodoCopia, solucaoAtual);
         buscaLocal(solucaoAtual, periodoCopia);
-        std::cout << "avaliacao: " << solucaoAtual->getAvaliacao() << std::endl;
-        if(solucaoAtual->getAvaliacao() < bestAvaliacao){
+
+        razao = getRazaoTotal(periodoCopia, solucaoAtual);
+
+        if(razao < bestAvaliacao){
+            delete solucaFinal;
+            std::cout << "avaliacao: " << razao << " " << contadorIteracoes <<std::endl;
             solucaFinal = solucaoAtual;
-            bestAvaliacao = solucaoAtual->getAvaliacao();
+            bestAvaliacao = razao;
         }else{
             delete periodoCopia;
             delete solucaoAtual;
@@ -34,6 +38,7 @@ void Grasp::execute() {
 
         contadorIteracoes++;
 //        std::cout << contadorIteracoes << std::endl;
+
 
     }
 
@@ -61,11 +66,16 @@ void Grasp::construcao(Solucao * solucaoAtual, Periodo * periodoCopia){
 
     for (int i = 0; i < qntIteracoes; ++i) {
         Candidatos * candidatos = new Candidatos();
+
         montarCandidatos(candidatos, solucaoAtual, periodoCopia);
+
         std::vector<Candidato> bestList;
+        int con = 0;
         for (auto elemento: candidatos->getCandidatos()) {
             if(elemento.getRazao() <= candidatos->getMin()+alpha*(candidatos->getMax() - candidatos->getMin())){
                 bestList.push_back(elemento);
+                if(con++ > 5)
+                    break;
             }
         }
 
@@ -76,14 +86,18 @@ void Grasp::construcao(Solucao * solucaoAtual, Periodo * periodoCopia){
             unsigned __int64  taxaAvaliacao = 0;
 
             for (auto aulas: elemento.second->getHorario()){
+                Sala * sala = solucaoAtual->getSalas().at((unsigned int) elemento.first);
 
-                solucaoAtual->getSalas().at((unsigned int) elemento.first)->getQuadroHorario().at(
-                        (unsigned int) (aulas.semana - 1)).at(
-                        (unsigned int) (aulas.periodo - 1))->setDisciplina(periodoCopia->getDisciplinas().at(
+                sala->getQuadroHorario().at((unsigned int) (aulas.semana == 0 ? 0: aulas.semana - 1)).at(
+                        (unsigned int) (aulas.periodo == 0 ? 0: aulas.periodo - 1))->setDisciplina(periodoCopia->getDisciplinas().at(
                         (unsigned int) escolhido.getIdVectorDisciplina()));
 
-                solucaoAtual->getSalas().at((unsigned int) elemento.first)->getQuadroHorario().at(
-                        (unsigned int) (aulas.semana - 1)).at((unsigned int) (aulas.periodo - 1))->setOcupado(true);
+
+                if(sala->getTipoSala() != Fantasma) {
+                    sala->getQuadroHorario().at(
+                            (unsigned int) (aulas.semana == 0 ? 0 : aulas.semana - 1)).at(
+                            (unsigned int) (aulas.periodo == 0 ? 0 : aulas.periodo - 1))->setOcupado(true);
+                }
 
                 periodoCopia->getDisciplinas().at(
                         (unsigned int) escolhido.getIdVectorDisciplina())->setDisciplinaAlocada(true);
@@ -112,7 +126,7 @@ void Grasp::construcao(Solucao * solucaoAtual, Periodo * periodoCopia){
 }
 
 void Grasp::montarCandidatos(Candidatos *candidatos, Solucao * solucaoAtual, Periodo * periodoCopia){
-    for (unsigned int i = 0; i < periodoCopia->getDisciplinas().size() ; ++i) {
+    for (unsigned int i = 0; i < periodoCopia->getDisciplinas().size() ; i++) {
 
         Disciplina * disciplinaAtual = periodoCopia->getDisciplinas().at(i);
 
@@ -123,7 +137,7 @@ void Grasp::montarCandidatos(Candidatos *candidatos, Solucao * solucaoAtual, Per
         if(disciplinaAtual->isDisciplinaAlocada())
             continue;
 
-        for (unsigned int k = 0; k < disciplinaAtual->getQuadroHorario()->getQntDiasHorario(); ++k) {
+        for (unsigned int k = 0; k < disciplinaAtual->getQuadroHorario()->getQntDiasHorario(); k++) {
             Elemento bestElemento = Elemento();
 
 
@@ -134,10 +148,9 @@ void Grasp::montarCandidatos(Candidatos *candidatos, Solucao * solucaoAtual, Per
                 Sala * salaAtual = solucaoAtual->getSalas().at(j);
 
                 bool salaOcupada = false;
-                for (auto horaro : disciplinaAtual->getQuadroHorario()->getAulas().at(k)->getHorario()) {
-                    if(salaAtual->getQuadroHorario().at(
-                            (unsigned int)(horaro.semana)-1).at(
-                            (unsigned int) (horaro.periodo)-1)->isOcupado()){
+                Aula * qh = disciplinaAtual->getQuadroHorario()->getAulas().at(k);
+                for (int x = 0; x < qh->getHorario().size(); x++) {
+                    if(salaAtual->getQuadroHorario().at(qh->getSemana(x)).at(qh->getPeriodo(x))->isOcupado()){
                         salaOcupada = true;
                     }
                 }
@@ -176,36 +189,100 @@ unsigned int Grasp::numeroRandom(int max){
     return (unsigned int) (max ? std::rand() % max : max);
 }
 
-void Grasp::buscaLocal(Solucao *solucaoAtual, Periodo *periodoCopia) {
-    Solucao * solucaoTemp  = new Solucao(*solucaoAtual);
-    Disciplina * disciplina = periodoCopia->getDisciplinas().at(numeroRandom(periodoCopia->getDisciplinas().size()));
-    for (int i = 0; i < solucaoAtual->getSalas().size(); ) {
-//        std::cout << getValorFuncaoObjetivo(solucaoTemp, periodoCopia) << std::endl;
-        i++;
-    }
-    delete solucaoTemp;
-}
+void Grasp::buscaLocal(Solucao *solucaoTemp, Periodo *periodoCopia) {
+    bool melhora = true;
+//    Solucao * solucaoTemp  = new Solucao(*solucaoAtual);
 
-unsigned __int64 Grasp::getValorFuncaoObjetivo(Solucao * solucao, Periodo *periodo){
-    unsigned __int64 taxaFinal = 0;
-    for (auto elemento: periodo->getDisciplinas()) {
-        Aula * aulaAnt = nullptr;
-        for (auto aula: elemento->getQuadroHorario()->getAulas()) {
-            unsigned __int64 taxaAvaliacao = 0;
-            for (auto aulaIndividual: aula->getHorario()) {
-                taxaAvaliacao += getRazaoSimples(elemento, solucao->getSalas().at((unsigned int) aula->getIdSala()));
+    while(melhora) {
+
+        melhora = false;
+
+        unsigned int randomNumberDisc = numeroRandom(periodoCopia->getDisciplinas().size());
+        Disciplina *disciplinaOgigem = periodoCopia->getDisciplinas().at(randomNumberDisc);
+        unsigned int randomNumberAula = numeroRandom(disciplinaOgigem->getQuadroHorario()->getAulas().size());
+        Aula *aula = disciplinaOgigem->getQuadroHorario()->getAulas().at(randomNumberAula);
+        Sala *salaOrigem = solucaoTemp->getSalas().at((unsigned int) aula->getIdSala());
+
+        for (unsigned int i = 0; i < solucaoTemp->getSalas().size();) {
+            Sala *sala = solucaoTemp->getSalas().at(i);
+            if (sala == solucaoTemp->getSalas().at((unsigned int) aula->getIdSala())) {
+                i++;
+                continue;
             }
-            if(aulaAnt) {
-                if (solucao->getSalas().at((unsigned int) aulaAnt->getIdSala())->getTipoBloco() !=
-                    solucao->getSalas().at((unsigned int) aula->getIdSala())->getTipoBloco())
-                    taxaAvaliacao += BLOCO_DIFERENTE;
+
+            unsigned __int64 valoOrigem = getValorFuncaoObjetivo(disciplinaOgigem, aula, salaOrigem);
+            unsigned __int64 valoDestino = getValorFuncaoObjetivo(disciplinaOgigem, aula, sala);
+
+
+            QuadroHorario *quadroHorarioDestino = sala->getQuadroHorario().at(aula->getSemana(0)).at(
+                    aula->getPeriodo(0));
+            if (!quadroHorarioDestino->isOcupado()) {
+                //mover
+
+                if (valoDestino < valoOrigem) {
+                    moveSwap(disciplinaOgigem, aula, salaOrigem, sala, true);
+                    melhora = true;
+                    break;
+                }
+
+
+
+            } else {
+                //troca
+                Disciplina *disciplinaDestino = quadroHorarioDestino->getDisciplina();
+                Aula *aulaDistino = nullptr;
+                for (auto d: disciplinaDestino->getQuadroHorario()->getAulas()) {
+                    if (d->getSemana(0) == aula->getSemana(0) && d->getPeriodo(0) == aula->getPeriodo(0))
+                        aulaDistino = d;
+                }
+                if (aulaDistino) {
+                    unsigned __int64 valoDestinoDiscD = getValorFuncaoObjetivo(disciplinaDestino, aulaDistino,
+                                                                               salaOrigem);
+                    unsigned __int64 valoOrigemDiscD = getValorFuncaoObjetivo(disciplinaDestino, aulaDistino,
+                                                                              solucaoTemp->getSalas().at(
+                                                                                      (unsigned int) aulaDistino->getIdSala()));
+                    if ((valoDestinoDiscD + valoDestino) < (valoOrigemDiscD + valoOrigem)) {
+                        moveSwap(disciplinaOgigem, aula, salaOrigem, sala, false);
+                        moveSwap(disciplinaDestino, aulaDistino, sala, salaOrigem, false);
+                        melhora = true;
+                        break;
+                    }
+                }
             }
-            aula->setRazao(taxaAvaliacao);
-            taxaFinal += taxaAvaliacao;
-            aulaAnt = aula;
+            i++;
         }
     }
-    solucao->setAvaliacao(taxaFinal);
+}
+
+void Grasp::moveSwap(Disciplina * disciplina, Aula * aula, Sala * salaOrigem, Sala * salaDestino, bool reset){
+
+    for (int i = 0; i < aula->getHorario().size(); ++i) {
+        salaDestino->getQuadroHorario().at(aula->getSemana(i)).at(aula->getPeriodo(i))->setDisciplina(disciplina);
+        salaDestino->getQuadroHorario().at(aula->getSemana(i)).at(aula->getPeriodo(i))->setOcupado(true);
+        aula->setIdSala(salaDestino->getId());
+
+        if(reset)
+            salaOrigem->getQuadroHorario().at(aula->getSemana(i)).at(aula->getPeriodo(i))->reset();
+    }
+
+
+}
+unsigned __int64 Grasp::getValorFuncaoObjetivo(Disciplina * disciplina, Aula * aula, Sala * sala){
+    unsigned __int64 taxaFinal = 0;
+
+    if(sala->getTipoSala() == Fantasma){
+        return SEM_SALA;
+    }
+
+    taxaFinal += getRazaoSimples(disciplina, sala);
+
+        for (auto aulas: disciplina->getQuadroHorario()->getAulas()) {
+            if(aulas != aula){
+                taxaFinal += getRazaoBloco(sala, salasOriginal->getSalas().at((unsigned int) aulas->getIdSala()));
+            }
+        }
+
+
     return taxaFinal;
 }
 
@@ -216,5 +293,45 @@ unsigned __int64 Grasp::getRazaoSimples(Disciplina * disciplina, Sala * sala){
     if(sala->getQuantidade() < disciplina->getQntAlunos())
         taxaAvaliacao += CAPACIDADE_SALA;
 
+    return taxaAvaliacao;
+}
+
+unsigned __int64 Grasp::getRazaoBloco(Sala * sala, Sala * sala1){
+    if(sala->getTipoBloco() == sala1->getTipoBloco())
+        return 0;
+    return BLOCO_DIFERENTE;
+}
+
+unsigned __int64 Grasp::getRazaoTotal(Periodo * periodo, Solucao * solucao){
+    unsigned __int64  taxaAvaliacao = 0;
+    for (auto displina: periodo->getDisciplinas()) {
+        Sala * antSala = nullptr;
+//        std::cout<< displina->getNomeDisciplina() << std::endl;
+//        std::cout<< displina->getQntAlunos() << std::endl;
+        for (auto aulas: displina->getQuadroHorario()->getAulas()) {
+            Sala * sala = solucao->getSalas().at((unsigned int) aulas->getIdSala());
+//            std::cout<< sala->getSala() << std::endl;
+//            for (auto a : aulas->getHorario()) {
+//                QuadroHorario * quadro =sala->getQuadroHorario().at(a.semana == 0 ? 0 : a.semana - 1).at(a.periodo == 0 ? 0 : a.periodo - 1);
+//                std::cout<<  quadro->getDisciplina()->getNomeDisciplina() << std::endl;
+//            }
+
+            if(sala->getTipoSala() == Fantasma){
+                taxaAvaliacao += SEM_SALA;
+
+            }else{
+                taxaAvaliacao += aulas->getHorario().size()*getRazaoSimples(displina, sala);
+
+                if(antSala){
+                    taxaAvaliacao += getRazaoBloco(sala, antSala);
+                }
+            }
+
+
+            antSala = sala;
+        }
+//        std::cout<< taxaAvaliacao << std::endl;
+//        std::cout << "" << std::endl;
+    }
     return taxaAvaliacao;
 }

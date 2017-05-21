@@ -68,6 +68,10 @@ public:
         point.periodo = hr%100;
         horario.push_back(point);
     }
+
+    unsigned int getSemana(int i) const { return (unsigned int) (horario.at(i).semana == 0 ? 0: horario.at(i).semana - 1); }
+    unsigned int getPeriodo(int i) const { return (unsigned int) (horario.at(i).periodo == 0 ? 0: horario.at(i).periodo - 1); }
+
 };
 
 

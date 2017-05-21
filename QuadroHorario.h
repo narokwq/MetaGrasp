@@ -15,15 +15,20 @@ private:
 public:
     QuadroHorario(const QuadroHorario &qh){
         ocupado = qh.ocupado;
+        disciplina = qh.disciplina;
     }
     QuadroHorario(){
         ocupado = false;
-        disciplina = 0;
+        disciplina = nullptr;
     }
     bool isOcupado() {return ocupado;}
     void setOcupado(bool o){ ocupado = o;}
     Disciplina *getDisciplina() {return disciplina;}
     void setDisciplina(Disciplina *d){disciplina = d;}
+    void reset(){
+        ocupado = false;
+        disciplina = nullptr;
+    }
 };
 
 

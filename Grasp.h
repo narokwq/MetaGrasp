@@ -47,11 +47,17 @@ public:
     void buscaLocal(Solucao * solucaoAtual, Periodo * periodoCopia);
 
 
-    unsigned long long int getValorFuncaoObjetivo(Solucao *solucao, Periodo *periodo);
-
     unsigned long long int getRazaoSimples(Disciplina *disciplina, Sala *sala);
 
     void printTime(time_t inicio, time_t fim);
+
+    unsigned long long int getRazaoBloco(Sala *sala, Sala *sala1);
+
+    unsigned long long int getRazaoTotal(Periodo *periodo, Solucao *solucao);
+
+    unsigned long long int getValorFuncaoObjetivo(Disciplina *disciplina, Aula *aula, Sala *sala);
+
+    void moveSwap(Disciplina *disciplina, Aula *aula, Sala *salaOrigem, Sala *salaDestino, bool reset);
 };
 
 

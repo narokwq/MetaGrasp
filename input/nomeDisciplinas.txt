@@ -53,3 +53,78 @@
 1000041/2	Estágio Supervisionado
 1000042/2	Informática Jurídica
 1000042/1	Informática Jurídica
+1000043/1	Sistemas de Informação
+1000044/1	Matemática Aplicada a Computação 
+1000045/1	Algoritmos e Programação
+1000046/1	Modelagem de Processos
+1000047/1	Introdução a Administração
+1000048/1	Banco de Dados
+1000049/1	Matemática Financeira
+1000050/1	Fund.Gestão de TI  
+1000051/1	Gestão Estratégica 
+1000052/1	Metodologia e Linguagem
+1000053/1	Sistemas Operacionais
+1000054/1	Análise e Projeto de Sistemas 
+1000055/1	Aspectos Financeiros da TI
+1000056/1	Tecnologias para Internet
+1000057/1	Introdução a Redes de Computadores 
+1000058/1	Gerenciamento de Projetos
+1000059/1	Gestão de Recursos Humanos 
+1000060/1	Gerenciamento de Serviços de TI 
+1000061/1	Inteligência Empresarial
+1000062/1	Comércio Eletrônico 
+1000063/1	Aplicações Empresariais
+1000064/1	Projeto ApIicado I
+1000065/1	Metodogia da Pesquisa Científica e Tecnológica
+1000066/1	Gestão da Informação
+1000067/1	Projeto Aplicado II
+1000068/1	Estágio Supervisionado  
+1000069/1	TÓPICOS ESPECIAIS
+1000070/1	Governança deTI
+1000071/1	Sistemas de Informação
+1000072/1	Matemática Aplicada a Computação 
+1000073/1	Algoritmos e Programação
+1000074/1	Design Gráfico
+1000075/1	Banco de Dados
+1000076/1	Estrutura de Dados
+1000077/1	Design de Interface para web 
+1000078/1	Metodologia e Linguagem de Programação 
+1000079/1	Sistemas Operacionais
+1000080/1	Metodologia e Linguagem de Programação Avançada
+1000081/1	Tecnologias de Acesso a Dados na Internet 
+1000082/1	Programação Dinâmica para Web 
+1000083/1	Desenvolvimentos de Jogos 
+1000084/1	Projeto Aplicado I
+1000085/1	Engenharia de Software 
+1000086/1	Projeto Aplicado II
+1000087/1	Programação para Dispositivos Móveis e Sem Fio 
+1000088/1	APLICAÇÕES COORPORATIVAS NA WEB
+1000089/1	Aplicações Corporativas na Web
+1000090/1	Estágio Supervisionado
+1000091/1	Fund. Computação e Sist. Operac. 
+1000092/1	Matemática Aplicada à Computação
+1000093/1	Arquitetura de Computadores
+1000095/1	Empreendedorismo
+1000094/1	Fundamentos de Redes
+1000094/2	Fundamentos de Redes
+1000096/1	Tecnologias de Redes Locais
+1000097/1	SO de Rede Aberto I
+1000098/1	Adm e Sup de Cliente de Rede
+1000099/1	Algoritmo e Programação
+1000100/1	Cabeamento Estruturado
+1000101/1	SO de Rede Aberto II
+1000102/1	Administração de Serviços de Diretório 
+1000103/1	Interconexão de Redes
+1000104/1	Programação em Shell
+1000105/1	Metodologia da Pesquisa Científica e Tecnológica
+1000106/1	Banco de Dados
+1000107/1	Tecnologias de Redes de Longas Distancias 
+1000108/1	Segurança de Redes 
+1000109/1	Conf. De Infraestrutura Servidor de Redes
+1000110/1	Tópicos Especiais
+1000111/1	Projeto de Redes I 
+1000113/1	Gerência e Desempenho de Redes
+1000112/1	Projeto de Redes II
+1000114/1	Planejamento e Implantação de Servidor de Rede
+1000115/1	TÓPICOS AVANÇADOS
+1000116/1	Estágio Supervisionado 

@@ -13,6 +13,7 @@
 class Sala {
 public:
     Sala(const Sala &sl){
+        id = sl.id;
         codSala = sl.codSala;
         quantidade = sl.quantidade;
         tipoSala = sl.tipoSala;
@@ -44,15 +45,22 @@ public:
 
     void setSala(int cod){ codSala = cod;}
     int getSala(){return codSala;}
+
     void setQuantidade(int qnt){ quantidade = qnt;}
     int getQuantidade(){ return quantidade;}
+
     void setTipoSala(int tipo){ tipoSala = TipoSala(tipo);}
     TipoSala getTipoSala(){ return tipoSala;}
+
     void setTipoBloco(int tipo){tipoBloco = TipoBloco(tipo);}
     TipoBloco getTipoBloco(){ return tipoBloco;}
 
+    int getId() const { return id; }
+    void setId(int id) { Sala::id = id; }
+
     std::array<std::array<QuadroHorario *, 15>, 5> getQuadroHorario(){return quadroHorario;}
 private:
+    int id;
     int codSala;
     int quantidade;
     TipoSala tipoSala;

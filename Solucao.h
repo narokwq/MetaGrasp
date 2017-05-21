@@ -32,7 +32,10 @@ public:
         salas.shrink_to_fit();
     }
 
-    void addSalas(Sala * sala) { salas.push_back(sala); }
+    void addSalas(Sala * sala) {
+        sala->setId(salas.size());
+        salas.push_back(sala);
+    }
 
     unsigned long long int getAvaliacao() const { return avaliacao; }
     void setAvaliacao(unsigned long long int avaliacao) { Solucao::avaliacao = avaliacao; }
